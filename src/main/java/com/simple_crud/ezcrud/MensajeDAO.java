@@ -45,7 +45,6 @@ public class MensajeDAO {
 
     public int insertar(Mensaje mensaje) throws ClassNotFoundException, SQLException {
         String sql = "INSERT INTO mensajes(mensaje,autor,fecha) VALUES (?,?,CURRENT_TIME())";
-        List<Mensaje> mensajes = new ArrayList<>();
         int registros = 0;
         try {
             this.con = getConnection();
