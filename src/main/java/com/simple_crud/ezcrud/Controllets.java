@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class Controllets {
-    @PostMapping("/new")
+    @PostMapping("/message")
     public String add(@RequestParam String message, @RequestParam String author)
             throws SQLException, ClassNotFoundException {
         MensajeDAO mensajeDAO = new MensajeDAO();
@@ -25,14 +25,14 @@ public class Controllets {
         return msg;
     }
 
-    @GetMapping("/selectAll")
+    @GetMapping("/message")
     public List<Mensaje> select() throws ClassNotFoundException, SQLException {
         MensajeDAO mensajeDAO = new MensajeDAO();
         List<Mensaje> data = mensajeDAO.seleccionar();
         return data;
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/message")
     public int edit(@RequestParam int id, @RequestParam String message, @RequestParam String author)
             throws SQLException, ClassNotFoundException {
         MensajeDAO mensajeDAO = new MensajeDAO();
@@ -41,7 +41,7 @@ public class Controllets {
         return registry;
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/message")
     public int delete(@RequestParam int id) throws ClassNotFoundException, SQLException {
         MensajeDAO mensajeDAO = new MensajeDAO();
         Mensaje deleteId = new Mensaje(id);
