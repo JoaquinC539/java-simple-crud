@@ -4,6 +4,8 @@ package com.simple_crud.ezcrud;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static com.simple_crud.ezcrud.Conexion.*;
 
 public class MensajeDAO {
@@ -41,6 +43,37 @@ public class MensajeDAO {
             }
         }
         return mensajes;
+    }
+
+    public Optional<Mensaje> seleccionarUno(Mensaje mensaje) throws ClassNotFoundException, SQLException {
+        String query = "SELECT * FROM mensajes WHERE id_mensaje=?";
+        try {
+            this.con = getConnection();
+            this.PS = this.con.prepareStatement(query);
+            this.PS.setInt(1, mensaje.getId());
+            this.RS = this.PS.executeQuery();
+            if (this.RS.next()) {
+                int id = this.RS.getInt("id_mensaje");
+                String msg = this.RS.getString("mensaje");
+                String autor = this.RS.getString("autor");
+                String fecha = this.RS.getString("fecha");
+                Mensaje ms = new Mensaje(id, msg, autor, fecha);
+                return Optional.of(ms);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException err) {
+            err.printStackTrace(System.out);
+            return Optional.empty();
+        } finally {
+            try {
+                cerrar(con);
+                cerrar(PS);
+                cerrar(RS);
+            } catch (SQLException err) {
+                err.printStackTrace(System.out);
+            }
+        }
     }
 
     public int insertar(Mensaje mensaje) throws ClassNotFoundException, SQLException {
