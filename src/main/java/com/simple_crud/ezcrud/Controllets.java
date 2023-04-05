@@ -19,13 +19,13 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class Controllets {
     @PostMapping("/message")
-    public String add(@RequestParam String message, @RequestParam String author)
+    public ResponseEntity<String> add(@RequestParam String message, @RequestParam String author)
             throws SQLException, ClassNotFoundException {
         MensajeDAO mensajeDAO = new MensajeDAO();
         Mensaje msm = new Mensaje(message, author);
         int registro = mensajeDAO.insertar(msm);
         String msg = ("Se inserto " + registro + " registro");
-        return msg;
+        return ResponseEntity.ok(msg);
     }
 
     @GetMapping("/message/{id}")
@@ -42,26 +42,27 @@ public class Controllets {
     }
 
     @GetMapping("/message")
-    public List<Mensaje> select() throws ClassNotFoundException, SQLException {
+    public ResponseEntity<List<Mensaje>> select() throws ClassNotFoundException, SQLException {
         MensajeDAO mensajeDAO = new MensajeDAO();
         List<Mensaje> data = mensajeDAO.seleccionar();
-        return data;
+        return ResponseEntity.ok(data);
     }
 
     @PutMapping("/message")
-    public int edit(@RequestParam int id, @RequestParam String message, @RequestParam String author)
+    public ResponseEntity<Integer> edit(@RequestParam int id, @RequestParam String message, @RequestParam String author)
             throws SQLException, ClassNotFoundException {
         MensajeDAO mensajeDAO = new MensajeDAO();
         Mensaje msm = new Mensaje(id, message, author);
-        int registry = mensajeDAO.editar(msm);
-        return registry;
+        Integer registry = mensajeDAO.editar(msm);
+        return ResponseEntity.ok(registry);
+
     }
 
     @DeleteMapping("/message")
-    public int delete(@RequestParam int id) throws ClassNotFoundException, SQLException {
+    public ResponseEntity<Integer> delete(@RequestParam int id) throws ClassNotFoundException, SQLException {
         MensajeDAO mensajeDAO = new MensajeDAO();
         Mensaje deleteId = new Mensaje(id);
-        int registry = mensajeDAO.eliminar(deleteId);
-        return registry;
+        Integer registry = mensajeDAO.eliminar(deleteId);
+        return ResponseEntity.ok(registry);
     }
 }
