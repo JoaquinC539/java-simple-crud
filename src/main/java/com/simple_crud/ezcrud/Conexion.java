@@ -3,15 +3,27 @@ package com.simple_crud.ezcrud;
 
 import java.sql.*;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class Conexion {
 
-    private static final String URL = "jdbc:mysql://localhost/mensajes_db?serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String pass = "labonita2012";
+    static Dotenv dotenv = Dotenv.load();
+
+    private static final String URL = dotenv.get("DB_URL");
+    private static final String USER = dotenv.get("DB_USER");
+    private static final String PASS = dotenv.get("DB_PASS");
+
+    ;
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(URL, USER, pass);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(URL, USER, PASS);
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+
     }
 
     public static void cerrar(ResultSet rs) throws SQLException {
